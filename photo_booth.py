@@ -1,6 +1,8 @@
 #!/usr/bin/python
 
 import RPi.GPIO as GPIO, time, os, subprocess
+import picamera
+import time
 
 # GPIO setup
 GPIO.setmode(GPIO.BCM)
@@ -37,7 +39,8 @@ while True:
         time.sleep(0.1)
       GPIO.output(POSE_LED, False)
       print("SNAP")
-      gpout = subprocess.check_output("gphoto2 --capture-image-and-download --filename /home/pi/photobooth_images/photobooth%H%M%S.jpg", stderr=subprocess.STDOUT, shell=True)
+
+      gpout = subprocess.check_output("raspistill -o /home/pi/photobooth_images/gala{timestamp:%Y-%m-%d-%H-%M}.jpg", stderr=subprocess.STDOUT, shell=True)
       print(gpout)
       if "ERROR" not in gpout: 
         snap += 1
